@@ -4,6 +4,6 @@ class DefaultController
 {
     public function index()
     {
-        require_once "views/index.php";
+        require_once "views/layouts/sidebar.php";
     }
 }
