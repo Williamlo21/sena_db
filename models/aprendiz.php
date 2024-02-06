@@ -177,4 +177,13 @@ class Aprendiz{
 
         return $edad;
     }
+    public function crearAprendiz(){
+        $sql = "INSERT INTO aprendices
+        VALUES (NULL,'{$this->getTipoDocumento()}', '{$this->getNumeroDocumento()}', '{$this->getPrimerNombre()}', '{$this->getSegundoNombre()}', '{$this->getPrimerApellido()}', '{$this->getSegundoApellido()}', '{$this->getFechaDeNacimiento()}', '{$this->getEdad()}', '{$this->getSexo()}',  '{$this->getTelefono()}', '{$this->getDireccion()}')";
+        if ($this->db->query($sql)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
