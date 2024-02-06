@@ -110,4 +110,71 @@ class Aprendiz{
 
         return $this;
     }
+    public function getEdad()
+    {
+        return $this->edad;
+    }
+
+    public function setEdad($edad)
+    {
+        $this->edad = $this->db->real_escape_string($edad);
+
+        return $this;
+    }
+
+
+    public function getSexo()
+    {
+        return $this->sexo;
+    }
+    public function setSexo($sexo)
+    {
+        $this->sexo = $this->db->real_escape_string($sexo);
+        return $this;
+    }
+    public function getTelefono()
+    {
+        return $this->telefono;
+    }
+    
+        public function setTelefono($telefono)
+        {
+            $this->telefono = $this->db->real_escape_string($telefono);
+            return $this;
+        }
+    public function getDireccion()
+    {
+        return $this->direccion;
+    }
+
+    public function setDireccion($direccion)
+    {
+        $this->direccion = $this->db->real_escape_string($direccion);
+        return $this;
+    }
+    public function getPassword()
+    {
+        return password_hash($this->db->real_escape_string($this->password), PASSWORD_BCRYPT, ['cost' => 4]);
+    }
+
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+    public function calcularEdad()
+    {
+        // Convertir las fechas a objetos DateTime
+        $nacimiento = new DateTime($this->fechaDeNacimiento);
+        $actual = new DateTime();
+
+        // Calcular la diferencia en años
+        $diferencia = $nacimiento->diff($actual);
+
+        // Obtener el número de años
+        $edad = $diferencia->y;
+
+        return $edad;
+    }
 }
