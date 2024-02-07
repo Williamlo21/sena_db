@@ -1,5 +1,5 @@
 <?php
-
+require_once 'config/db.php';
 class Aprendiz{
     private $tipoDocumento;
     private $numeroDocumento;
@@ -154,6 +154,7 @@ class Aprendiz{
     }
     public function getPassword()
     {
+        // creamos la contraseña encriptada
         return password_hash($this->db->real_escape_string($this->password), PASSWORD_BCRYPT, ['cost' => 4]);
     }
 
@@ -165,6 +166,8 @@ class Aprendiz{
     }
     public function calcularEdad()
     {
+        // funcion para calcular la edad de acuerdo con la fecha de nacimiento establecida. 
+        // para evitar problemas de inconsistencia en los datos
         // Convertir las fechas a objetos DateTime
         $nacimiento = new DateTime($this->fechaDeNacimiento);
         $actual = new DateTime();
@@ -178,6 +181,7 @@ class Aprendiz{
         return $edad;
     }
     public function crearAprendiz(){
+        // consulta para guardar los datos del aprendiz
         $sql = "INSERT INTO aprendices
         VALUES (NULL,'{$this->getTipoDocumento()}', '{$this->getNumeroDocumento()}', '{$this->getPrimerNombre()}', '{$this->getSegundoNombre()}', '{$this->getPrimerApellido()}', '{$this->getSegundoApellido()}', '{$this->getFechaDeNacimiento()}', '{$this->getEdad()}', '{$this->getSexo()}',  '{$this->getTelefono()}', '{$this->getDireccion()}')";
         if ($this->db->query($sql)) {
