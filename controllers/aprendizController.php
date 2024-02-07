@@ -12,10 +12,14 @@ class aprendizController {
 			require_once'views/aprendiz/verAprendices.php';	
 		}
 		public function verAprendiz(){
-			// funcion para hacer la consulta de un solo aprendiz con el id
-			$id = isset($_GET['id']) ? $_GET(['id']) : '';
-			if(!empty($id)){
-				
+		// funcion para hacer la consulta de un solo aprendiz con el id
+		if (isset($_GET['id'])) {
+			$id = $_GET['id'];
+				$aprendiz = new Aprendiz();
+				$aprendiz->setId($id);
+				// $_SESSION['aprendiz'] = $aprendiz->verAprendiz();
+				$nAprendiz = $aprendiz->verAprendiz();
+				require_once 'views/aprendiz/verAprendiz.php';
 			}
 
 		}

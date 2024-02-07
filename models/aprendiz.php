@@ -1,6 +1,8 @@
 <?php
 require_once 'config/db.php';
-class Aprendiz{
+class Aprendiz
+{
+    private $id;
     private $tipoDocumento;
     private $numeroDocumento;
     private $primerNombre;
@@ -27,6 +29,18 @@ class Aprendiz{
         }
     }
 
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $this->db->real_escape_string($id);
+
+        return $this;
+    }
     public function getTipoDocumento()
     {
         return $this->tipoDocumento;
@@ -136,12 +150,12 @@ class Aprendiz{
     {
         return $this->telefono;
     }
-    
-        public function setTelefono($telefono)
-        {
-            $this->telefono = $this->db->real_escape_string($telefono);
-            return $this;
-        }
+
+    public function setTelefono($telefono)
+    {
+        $this->telefono = $this->db->real_escape_string($telefono);
+        return $this;
+    }
     public function getDireccion()
     {
         return $this->direccion;
@@ -180,7 +194,8 @@ class Aprendiz{
 
         return $edad;
     }
-    public function crearAprendiz(){
+    public function crearAprendiz()
+    {
         // consulta para guardar los datos del aprendiz
         $sql = "INSERT INTO aprendices
         VALUES (NULL,'{$this->getTipoDocumento()}', '{$this->getNumeroDocumento()}', '{$this->getPrimerNombre()}', '{$this->getSegundoNombre()}', '{$this->getPrimerApellido()}', '{$this->getSegundoApellido()}', '{$this->getFechaDeNacimiento()}', '{$this->getEdad()}', '{$this->getSexo()}',  '{$this->getTelefono()}', '{$this->getDireccion()}')";
@@ -190,13 +205,31 @@ class Aprendiz{
             return false;
         }
     }
-    public function verAprendices(){
-        $sql= "SELECT id, numeroDocumento, primerNombre, primerApellido from aprendices;";
-        $aprendices= $this->db->query($sql);
+    public function verAprendices()
+    {
+        $sql = "SELECT id, numeroDocumento, primerNombre, primerApellido from aprendices;";
+        $aprendices = $this->db->query($sql);
         if ($aprendices) {
             $verAprendices = $aprendices->fetch_all(MYSQLI_ASSOC);
             return $verAprendices;
         } else {
+            return false;
+        }
+    }
+    public function verAprendiz()
+    {
+        $id = $this->getId();
+        $sql = "SELECT aprendices.id, tipodocumento.descripcion AS tipoDeDocumento, aprendices.numeroDocumento, aprendices.primerNombre, aprendices.segundoNombre,
+        aprendices.primerApellido, aprendices.segundoApellido, aprendices.fechaDeNacimiento, aprendices.edad, sexo.descripcion AS sex,
+        aprendices.telefono, aprendices.direccion
+        FROM aprendices
+        JOIN sexo ON sexo.id = aprendices.idSexo
+        JOIN tipodocumento ON tipodocumento.id = aprendices.idTipoDocumento 
+        WHERE aprendices.id=$id;";
+        $aprendiz = $this->db->query($sql);
+        if($aprendiz){
+            return  $aprendiz->fetch_assoc();
+        }else{
             return false;
         }
     }
