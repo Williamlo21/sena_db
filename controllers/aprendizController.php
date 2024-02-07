@@ -5,6 +5,20 @@ class aprendizController {
         require_once "views/aprendiz/crearAprendiz.php";
         // funcion que nos redirige a la pagina con el formulario para registrar al aprendiz
     }
+		public function verAprendices(){
+			// con esta funcion hacemos la consulta de todos los aprendices que hay registrados
+			$Naprendices = new Aprendiz();
+			$aprendices = $Naprendices->verAprendices();
+			require_once'views/aprendiz/verAprendices.php';	
+		}
+		public function verAprendiz(){
+			// funcion para hacer la consulta de un solo aprendiz con el id
+			$id = isset($_GET['id']) ? $_GET(['id']) : '';
+			if(!empty($id)){
+				
+			}
+
+		}
     public function guardarAprendiz(){
         // funcion donde recibimos el post del formulario para crear al aprendiz
         $tipoDocumento = isset($_POST['tipoDocumento']) ? strtoupper($_POST['tipoDocumento']) : '';

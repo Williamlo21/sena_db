@@ -190,4 +190,14 @@ class Aprendiz{
             return false;
         }
     }
+    public function verAprendices(){
+        $sql= "SELECT id, numeroDocumento, primerNombre, primerApellido from aprendices;";
+        $aprendices= $this->db->query($sql);
+        if ($aprendices) {
+            $verAprendices = $aprendices->fetch_all(MYSQLI_ASSOC);
+            return $verAprendices;
+        } else {
+            return false;
+        }
+    }
 }
