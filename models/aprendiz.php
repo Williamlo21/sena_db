@@ -233,4 +233,14 @@ class Aprendiz
             return false;
         }
     }
+    public function eliminarAprendiz(){
+        $id = $this->getId();
+        $sql = "DELETE FROM aprendices WHERE id=$id;";
+        $delete = $this->db->query($sql);
+        if($delete){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

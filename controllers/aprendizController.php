@@ -21,7 +21,17 @@ class aprendizController {
 				$nAprendiz = $aprendiz->verAprendiz();
 				require_once 'views/aprendiz/verAprendiz.php';
 			}
-
+		}
+		public function eliminarAprendiz(){
+		if (isset($_GET['id'])) {
+			$id = $_GET['id'];
+			$aprendiz = new Aprendiz();
+			$aprendiz->setId($id);
+			// $_SESSION['aprendiz'] = $aprendiz->verAprendiz();
+			$nAprendiz = $aprendiz->eliminarAprendiz();
+			// require_once 'views/aprendiz/verAprendices.php';
+			header("Location: ". base_url);
+		}
 		}
     public function guardarAprendiz(){
         // funcion donde recibimos el post del formulario para crear al aprendiz
