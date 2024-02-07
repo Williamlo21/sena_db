@@ -1,7 +1,7 @@
 <!-- tabla -->
 <div class="container">
   <div class="table">
-    <table class="table"> 
+    <table class="table">
       <thead>
         <tr>
           <th scope="col">Id</th>
@@ -22,7 +22,7 @@
             <td><?= $apr['numeroDocumento']; ?></td>
             <td><?= $apr['primerNombre']; ?></td>
             <td><?= $apr['primerApellido']; ?></td>
-            <td><a href="<?= base_url ?>aprendiz/verAprendiz&id=<?= $apr['id']; ?>" class="btn btn-primary">Ver</a></td>
+            <td><a href="<?= base_url ?>aprendiz/verAprendiz&id=<?= $apr['id']; ?>" class="btn btn-info">Ver</a></td>
             <td><a href="<?= base_url ?>aprendiz/editarAprendiz&id=<?= $apr['id']; ?>" class="btn btn-warning">Editar</a></td>
             <td><a href="<?= base_url ?>aprendiz/eliminarAprendiz&id=<?= $apr['id']; ?>" class="btn btn-danger">Eliminar</a></td>
           </tr>

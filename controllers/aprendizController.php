@@ -1,28 +1,33 @@
 <?php
 require_once 'models/aprendiz.php';
-class aprendizController {
-    public function crearAprendiz(){
-        require_once "views/aprendiz/crearAprendiz.php";
-        // funcion que nos redirige a la pagina con el formulario para registrar al aprendiz
-    }
-		public function verAprendices(){
-			// con esta funcion hacemos la consulta de todos los aprendices que hay registrados
-			$Naprendices = new Aprendiz();
-			$aprendices = $Naprendices->verAprendices();
-			require_once'views/aprendiz/verAprendices.php';	
-		}
-		public function verAprendiz(){
+class aprendizController
+{
+	public function crearAprendiz()
+	{
+		require_once "views/aprendiz/crearAprendiz.php";
+		// funcion que nos redirige a la pagina con el formulario para registrar al aprendiz
+	}
+	public function verAprendices()
+	{
+		// con esta funcion hacemos la consulta de todos los aprendices que hay registrados
+		$Naprendices = new Aprendiz();
+		$aprendices = $Naprendices->verAprendices();
+		require_once 'views/aprendiz/verAprendices.php';
+	}
+	public function verAprendiz()
+	{
 		// funcion para hacer la consulta de un solo aprendiz con el id
 		if (isset($_GET['id'])) {
 			$id = $_GET['id'];
-				$aprendiz = new Aprendiz();
-				$aprendiz->setId($id);
-				// $_SESSION['aprendiz'] = $aprendiz->verAprendiz();
-				$nAprendiz = $aprendiz->verAprendiz();
-				require_once 'views/aprendiz/verAprendiz.php';
-			}
+			$aprendiz = new Aprendiz();
+			$aprendiz->setId($id);
+			// $_SESSION['aprendiz'] = $aprendiz->verAprendiz();
+			$nAprendiz = $aprendiz->verAprendiz();
+			require_once 'views/aprendiz/verAprendiz.php';
 		}
-		public function eliminarAprendiz(){
+	}
+	public function eliminarAprendiz()
+	{
 		if (isset($_GET['id'])) {
 			$id = $_GET['id'];
 			$aprendiz = new Aprendiz();
@@ -30,52 +35,111 @@ class aprendizController {
 			// $_SESSION['aprendiz'] = $aprendiz->verAprendiz();
 			$nAprendiz = $aprendiz->eliminarAprendiz();
 			// require_once 'views/aprendiz/verAprendices.php';
-			header("Location: ". base_url);
-		}
-		}
-    public function guardarAprendiz(){
-        // funcion donde recibimos el post del formulario para crear al aprendiz
-        $tipoDocumento = isset($_POST['tipoDocumento']) ? strtoupper($_POST['tipoDocumento']) : '';
-        $numeroDocumento = isset($_POST['numeroDocumento']) ? strtoupper($_POST['numeroDocumento']) : '';
-        $primerNombre = isset($_POST['primerNombre']) ? strtoupper($_POST['primerNombre']) : '';
-        $segundoNombre = isset($_POST['segundoNombre']) ? strtoupper($_POST['segundoNombre']) : NULL;
-        $primerApellido = isset($_POST['primerApellido']) ? strtoupper($_POST['primerApellido']) : '';
-        $segundoApellido = isset($_POST['segundoApellido']) ? strtoupper($_POST['segundoApellido']) : NULL;
-        $fechaDeNacimiento = isset($_POST['fechaDeNacimiento']) ? $_POST['fechaDeNacimiento'] : '';
-        $sexo = isset($_POST['sexo']) ? $_POST['sexo'] : '';
-        $telefono = isset($_POST['telefono']) ? $_POST['telefono'] : '';
-        $direccion = isset($_POST['direccion']) ? strtoupper($_POST['direccion']) : '';
-        try {
-            // Verificar si los campos obligatorios no están vacíos
-            if (!empty($tipoDocumento) && !empty($numeroDocumento) && !empty($primerNombre) && !empty($primerApellido) && !empty($fechaDeNacimiento) && !empty($sexo)  && !empty($direccion) && !empty($telefono)) {
-                $Naprendiz = new Aprendiz;
-								
-                $Naprendiz->setTipoDocumento($tipoDocumento);
-								$Naprendiz->setNumeroDocumento($numeroDocumento);
-								$Naprendiz->setPrimerNombre($primerNombre);
-								$Naprendiz->setSegundoNombre($segundoNombre);
-								$Naprendiz->setPrimerApellido($primerApellido);
-								$Naprendiz->setSegundoApellido($segundoApellido);
-								$Naprendiz->setFechaDeNacimiento($fechaDeNacimiento);
-								// usamos la funcion calcular edad. para no tener inconsistencias en la informacion
-								$edad = $Naprendiz->calcularEdad();
-								$Naprendiz->setEdad($edad);
-								$Naprendiz->setSexo($sexo);
-								$Naprendiz->setTelefono($telefono);
-								$Naprendiz->setDireccion($direccion);
-
-								$Naprendiz->crearAprendiz();
-								header("Location: ". base_url);
-								exit;
-								
-            }else{
-							echo "los campos son obligatorios";
-						}
-        }catch(Exception $e){
-					echo "error al guardar al aprendiz" . $e->getMessage();
-
-				}
-			
+			header("Location: " . base_url);
 		}
 	}
+	public function guardarAprendiz()
+	{
+		$errores = array();
+		// funcion donde recibimos el post del formulario para crear al aprendiz
+		$tipoDocumento = isset($_POST['tipoDocumento']) ? $_POST['tipoDocumento'] : '';
+		$tiposDocumentosPermitidos = array('0','1', '2', '3', '4', '5'); // Lista de tipos de documento permitidos
 
+		if (!in_array($tipoDocumento, $tiposDocumentosPermitidos)) {
+			$errores['tipoDocumento'] = 'Seleccione un tipo de documento válido.';
+		}
+
+		$numeroDocumento = isset($_POST['numeroDocumento']) ? strtoupper($_POST['numeroDocumento']) : '';
+		// validar que el formato coincida con lo permitido
+		if (!preg_match('/^[0-9]+$/', $numeroDocumento)) {
+			$errores['numeroDocumento'] = 'El número de documento debe contener solo números.';
+		}
+		$primerNombre = isset($_POST['primerNombre']) ? strtoupper($_POST['primerNombre']) : '';
+		// Validar que no haya espacios en el nombre
+		if (trim($primerNombre) !== $primerNombre) {
+			$errores['primerNombre'] = 'El nombre no debe contener espacios.';
+		}
+		// Validar que solo contiene letras
+		if (!preg_match('/^[A-Z]+$/', $primerNombre)) {
+			$errores['primerNombre'] = 'El nombre debe contener solo letras.';
+		}
+		$segundoNombre = isset($_POST['segundoNombre']) ? strtoupper($_POST['segundoNombre']) : NULL;
+		if (trim($segundoNombre) !== $segundoNombre) {
+			$errores['segundoNombre'] = 'El nombre no debe contener espacios.';
+		}
+		// Validar que solo contiene letras
+		if (!preg_match('/^[A-Z]+$/', $segundoNombre)) {
+			$errores['segundoNombre'] = 'El nombre debe contener solo letras.';
+		}
+		$primerApellido = isset($_POST['primerApellido']) ? strtoupper($_POST['primerApellido']) : '';
+		// Validar que no haya espacios en el apellido
+		if (trim($primerApellido) !== $primerApellido) {
+			$errores['primerApellido'] = 'El Apellido no debe contener espacios.';
+		}
+		// Validar que solo contiene letras
+		if (!preg_match('/^[A-Z]+$/', $primerApellido)) {
+			$errores['primerApellido'] = 'El Apellido debe contener solo letras.';
+		}
+		$segundoApellido = isset($_POST['segundoApellido']) ? strtoupper($_POST['segundoApellido']) : NULL;
+		if (trim($segundoApellido) !== $segundoApellido) {
+			$errores['segundoApellido'] = 'El Apellido no debe contener espacios.';
+		}
+		// Validar que solo contiene letras
+		if (!preg_match('/^[A-Z]+$/', $segundoApellido)) {
+			$errores['segundoApellido'] = 'El Apellido debe contener solo letras.';
+		}
+		$fechaDeNacimiento = isset($_POST['fechaDeNacimiento']) ? $_POST['fechaDeNacimiento'] : '';
+		// validacion para la fecha de nacimiento que no sea menor a 14 años
+			$fechaActual = new DateTime();
+			$fechaNacimiento = new DateTime($fechaDeNacimiento);
+			$diferencia = $fechaActual->diff($fechaNacimiento);
+
+			if ($diferencia->y < 14) {
+				$errores['fechaDeNacimiento'] = 'El aprendiz debe tener minimo 14 años para registrarlo.';
+			}
+
+		$sexo = isset($_POST['sexo']) ? $_POST['sexo'] : '';
+		// validar el sexo
+		$sexosPermitidos = array('0', '1', '2'); // Lista de sexos permitidos
+
+		if (!in_array($sexo, $sexosPermitidos)) {
+			$errores['sexo'] = 'Seleccione una opción válida.';
+		}
+		$telefono = isset($_POST['telefono']) ? $_POST['telefono'] : '';
+		if (!preg_match('/^[0-9]+$/', $telefono)) {
+			$errores['telefono'] = 'El número de telefono debe contener solo números.';
+		}
+		$direccion = isset($_POST['direccion']) ? strtoupper($_POST['direccion']) : '';
+		require_once 'views/aprendiz/crearAprendiz.php';
+
+		try {
+			// Verificar si los campos obligatorios no están vacíos
+			if ($tipoDocumento !== ''  && !empty($numeroDocumento) && !empty($primerNombre) && !empty($primerApellido) && !empty($fechaDeNacimiento) && $sexo !== ''  && !empty($telefono)&& !empty($direccion)) {
+				$Naprendiz = new Aprendiz;
+
+				$Naprendiz->setTipoDocumento($tipoDocumento);
+				$Naprendiz->setNumeroDocumento($numeroDocumento);
+				$Naprendiz->setPrimerNombre($primerNombre);
+				$Naprendiz->setSegundoNombre($segundoNombre);
+				$Naprendiz->setPrimerApellido($primerApellido);
+				$Naprendiz->setSegundoApellido($segundoApellido);
+				$Naprendiz->setFechaDeNacimiento($fechaDeNacimiento);
+				// usamos la funcion calcular edad. para no tener inconsistencias en la informacion
+				$edad = $Naprendiz->calcularEdad();
+				$Naprendiz->setEdad($edad);
+				$Naprendiz->setSexo($sexo);
+				$Naprendiz->setTelefono($telefono);
+				$Naprendiz->setDireccion($direccion);
+
+				$Naprendiz->crearAprendiz();
+				header("Location: " . base_url);
+				exit;
+			} else {
+				$errores['obligatorios'] = 'Por favor llene el campo obligatorio.';
+				require_once 'views/aprendiz/crearAprendiz.php';
+			}
+		} catch (Exception $e) {
+			echo "error al guardar al aprendiz" . $e->getMessage();
+		}
+	}
+}

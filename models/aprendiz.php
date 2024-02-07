@@ -207,7 +207,7 @@ class Aprendiz
     }
     public function verAprendices()
     {
-        $sql = "SELECT id, numeroDocumento, primerNombre, primerApellido from aprendices;";
+        $sql = "SELECT id, numeroDocumento, primerNombre, primerApellido from aprendices ORDER BY id ASC;";
         $aprendices = $this->db->query($sql);
         if ($aprendices) {
             $verAprendices = $aprendices->fetch_all(MYSQLI_ASSOC);
