@@ -4,7 +4,7 @@ ob_start();
 $fechaMaxima = date('Y-m-d', strtotime('-14 years'));
 ?>
 <div class="container">
-  <form action="<?= base_url ?>aprendiz/guardarAprendiz" method="post">
+  <form action="<?= base_url ?>aprendiz/guardarAprendiz" method="post" onsubmit="return validarNombresApellidos()">
     <div class="sm-3">
       <label for="tipoDocumento" class="form-label">Tipo de Documento *</label>
       <select class="form-select" id="tipoDocumento" name="tipoDocumento">
@@ -105,7 +105,7 @@ $fechaMaxima = date('Y-m-d', strtotime('-14 years'));
     <div class="mb-3">
       <label for="fechaDeNacimiento" class="form-label">Fecha de Nacimiento *</label>
       <input type="date" class="form-control" id="fechaDeNacimiento" name="fechaDeNacimiento" max="<?= $fechaMaxima ?>">
-      
+
       <?php if (isset($errores['fechaDeNacimiento'])) : ?>
         <div class="alert alert-danger" role="alert">
           <img src="<?= base_url ?>assets/icons/exclamation-octagon.svg" alt="Alerta">
@@ -121,7 +121,7 @@ $fechaMaxima = date('Y-m-d', strtotime('-14 years'));
       <div class="alert alert-info" role="alert">
 
         <p class="text-body-secondary">
-          
+
           <img src="<?= base_url ?>assets/icons/exclamation-triangle.svg" alt="Alerta">
           El Servicio Nacional de Aprendizaje Sena no acepta aprendices menores a 14 años.
         </p>
@@ -149,7 +149,7 @@ $fechaMaxima = date('Y-m-d', strtotime('-14 years'));
       </div>
       <div class="mb-3">
         <label for="telefono" class="form-label">Telefono *</label>
-        <input type="text" class="form-control" name="telefono" minlength="7" pattern="[0-9]+">
+        <input type="text" class="form-control" id="telefono" name="telefono" minlength="7" pattern="[0-9]+">
         <?php if (isset($errores['telefono'])) : ?>
           <div class="alert alert-danger" role="alert">
             <img src="<?= base_url ?>assets/icons/exclamation-octagon.svg" alt="Alerta">
@@ -165,7 +165,7 @@ $fechaMaxima = date('Y-m-d', strtotime('-14 years'));
       </div>
       <div class="mb-3">
         <label for="direccion" class="form-label">Direccion *</label>
-        <input type="text" class="form-control" name="direccion" pattern="[A-Za-z0-9\s,.'-#]*">
+        <input type="text" class="form-control" id="direccion" name="direccion" pattern="[A-Za-z0-9\s,.'-#]*">
         <?php if (isset($errores['direccion'])) : ?>
           <div class="alert alert-danger" role="alert">
             <img src="<?= base_url ?>assets/icons/exclamation-octagon.svg" alt="Alerta">

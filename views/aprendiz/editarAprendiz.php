@@ -4,8 +4,8 @@ ob_start();
 $fechaMaxima = date('Y-m-d', strtotime('-14 years'));
 ?>
 <div class="container">
-  <form action="<?= base_url ?>aprendiz/updateAprendiz" method="post">
-  <input type="hidden" value="<?= $nAprendiz['id'] ?>" name="id">
+  <form action="<?= base_url ?>aprendiz/updateAprendiz" method="post" onsubmit="return validarNombresApellidos()">
+    <input type="hidden" value="<?= $nAprendiz['id'] ?>" name="id">
     <div class="sm-3">
       <label for="tipoDocumento" class="form-label">Tipo de Documento *</label>
       <select class="form-select" id="tipoDocumento" name="tipoDocumento">
@@ -132,7 +132,7 @@ $fechaMaxima = date('Y-m-d', strtotime('-14 years'));
         <select class="form-select" id="sexo" name="sexo">
           <option value="0" <?= (isset($nAprendiz['sexo'])) && $nAprendiz['sexo'] == 'INDEFINIDO' ? 'selected' : ''; ?>>INDEFINIDO</option>
           <option value="1" <?= (isset($nAprendiz['sexo'])) && $nAprendiz['sexo'] == 'MASCULINO' ? 'selected' : ''; ?>>MASCULINO</option>
-          <option value="2" <?= (isset($nAprendiz['sexo'])) && $nAprendiz['sexo'] == 'FEMENINO' ? 'selected' : ''; ?> >FEMENINO</option>
+          <option value="2" <?= (isset($nAprendiz['sexo'])) && $nAprendiz['sexo'] == 'FEMENINO' ? 'selected' : ''; ?>>FEMENINO</option>
         </select>
 
         <?php if (isset($errores['sexo'])) : ?>
@@ -150,7 +150,7 @@ $fechaMaxima = date('Y-m-d', strtotime('-14 years'));
       </div>
       <div class="mb-3">
         <label for="telefono" class="form-label">Telefono *</label>
-        <input type="text" class="form-control" name="telefono" minlength="7" pattern="[0-9]+" value="<?= isset($nAprendiz['telefono']) ? $nAprendiz['telefono'] : ''; ?>">
+        <input type="text" class="form-control" id="telefono" name="telefono" minlength="7" pattern="[0-9]+" value="<?= isset($nAprendiz['telefono']) ? $nAprendiz['telefono'] : ''; ?>">
         <?php if (isset($errores['telefono'])) : ?>
           <div class="alert alert-danger" role="alert">
             <img src="<?= base_url ?>assets/icons/exclamation-octagon.svg" alt="Alerta">

@@ -244,9 +244,11 @@ class Aprendiz
             return false;
         }
     }
+
     public function editarAprendiz()
     {
         $id = $this->getId();
+
         $sql = "UPDATE aprendices SET 
         idTipoDocumento = '{$this->getTipoDocumento()}',
         numeroDocumento = '{$this->getNumeroDocumento()}',
@@ -260,7 +262,9 @@ class Aprendiz
         telefono = '{$this->getTelefono()}', 
         direccion = '{$this->getDireccion()}'
         WHERE id = '$id'; ";
-
+        // echo $sql;
+        // echo $id;
+        // die();
         if ($this->db->query($sql)) {
             return true;
             // echo "exito";
@@ -272,4 +276,6 @@ class Aprendiz
             return false;
         }
     }
+
+
 }

@@ -131,6 +131,7 @@ class aprendizController
 				ob_start();
 				$Naprendiz = new Aprendiz;
 
+				$Naprendiz->setId($id);
 				$Naprendiz->setTipoDocumento($tipoDocumento);
 				$Naprendiz->setNumeroDocumento($numeroDocumento);
 				$Naprendiz->setPrimerNombre($primerNombre);
@@ -144,24 +145,26 @@ class aprendizController
 				$Naprendiz->setSexo($sexo);
 				$Naprendiz->setTelefono($telefono);
 				$Naprendiz->setDireccion($direccion);
-				$consulta = $Naprendiz->editarAprendiz();
-
-				if ($consulta) {
-
+				// $consulta = $Naprendiz->editarAprendiz();
+				$Naprendiz->editarAprendiz();
+				
+				// if ($consulta) {
+					
+					
 
 					// $exitos['registrado'] = 'Aprendiz registrado con éxito.';
 					$_SESSION['exito'] = 'Aprendiz actualizado con éxito.';
 					ob_end_flush();
 					header("Location: " . base_url);
 					exit;
-				}
+				// }
 			} else {
 				$errores['obligatorios'] = 'Por favor llene el campo obligatorio.';
 				require_once 'views/aprendiz/editarAprendiz.php';
 			}
 		} catch (Exception $e) {
 			echo "error al guardar al aprendiz" . $e->getMessage();
-			echo 'paila';
+			// echo 'paila';
 		}
 		// var_dump($nAprendiz);
 		// die();
