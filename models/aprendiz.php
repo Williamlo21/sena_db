@@ -227,19 +227,48 @@ class Aprendiz
         JOIN tipodocumento ON tipodocumento.id = aprendices.idTipoDocumento 
         WHERE aprendices.id=$id;";
         $aprendiz = $this->db->query($sql);
-        if($aprendiz){
+        if ($aprendiz) {
             return  $aprendiz->fetch_assoc();
-        }else{
+        } else {
             return false;
         }
     }
-    public function eliminarAprendiz(){
+    public function eliminarAprendiz()
+    {
         $id = $this->getId();
         $sql = "DELETE FROM aprendices WHERE id=$id;";
         $delete = $this->db->query($sql);
-        if($delete){
+        if ($delete) {
             return true;
-        }else{
+        } else {
+            return false;
+        }
+    }
+    public function editarAprendiz()
+    {
+        $id = $this->getId();
+        $sql = "UPDATE aprendices SET 
+        idTipoDocumento = '{$this->getTipoDocumento()}',
+        numeroDocumento = '{$this->getNumeroDocumento()}',
+        primerNombre = '{$this->getPrimerNombre()}', 
+        segundoNombre = '{$this->getSegundoNombre()}',
+        primerApellido = '{$this->getPrimerApellido()}',
+        segundoApellido = '{$this->getSegundoApellido()}', 
+        fechaDeNacimiento = '{$this->getFechaDeNacimiento()}', 
+        edad = '{$this->getEdad()}', 
+        idSexo = '{$this->getSexo()}',  
+        telefono = '{$this->getTelefono()}', 
+        direccion = '{$this->getDireccion()}'
+        WHERE id = '$id'; ";
+
+        if ($this->db->query($sql)) {
+            return true;
+            // echo "exito";
+            // die();
+            exit;
+        } else {
+            // echo "no fue exito";
+            // die();
             return false;
         }
     }
