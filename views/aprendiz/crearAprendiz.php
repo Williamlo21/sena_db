@@ -1,4 +1,5 @@
 <?php
+ob_start();
 // Calcular la fecha actual menos 14 años
 $fechaMaxima = date('Y-m-d', strtotime('-14 years'));
 ?>
@@ -103,7 +104,7 @@ $fechaMaxima = date('Y-m-d', strtotime('-14 years'));
     </div>
     <div class="mb-3">
       <label for="fechaDeNacimiento" class="form-label">Fecha de Nacimiento *</label>
-      <input type="date" class="form-control" id="fechaDeNacimiento" name="fechaDeNacimiento" max="<img src="<?= base_url ?>assets/icons/exclamation-octagon.svg" alt="Alerta">
+      <input type="date" class="form-control" id="fechaDeNacimiento" name="fechaDeNacimiento" max="<?= $fechaMaxima ?>">
       
       <?php if (isset($errores['fechaDeNacimiento'])) : ?>
         <div class="alert alert-danger" role="alert">

@@ -28,6 +28,7 @@ class aprendizController
 	}
 	public function eliminarAprendiz()
 	{
+		$exitos = array();
 		if (isset($_GET['id'])) {
 			$id = $_GET['id'];
 			$aprendiz = new Aprendiz();
@@ -35,15 +36,17 @@ class aprendizController
 			// $_SESSION['aprendiz'] = $aprendiz->verAprendiz();
 			$nAprendiz = $aprendiz->eliminarAprendiz();
 			// require_once 'views/aprendiz/verAprendices.php';
+			$_SESSION['exito'] = 'Aprendiz eliminado.';
 			header("Location: " . base_url);
 		}
 	}
 	public function guardarAprendiz()
 	{
 		$errores = array();
+		$exitos = array();
 		// funcion donde recibimos el post del formulario para crear al aprendiz
 		$tipoDocumento = isset($_POST['tipoDocumento']) ? $_POST['tipoDocumento'] : '';
-		$tiposDocumentosPermitidos = array('0','1', '2', '3', '4', '5'); // Lista de tipos de documento permitidos
+		$tiposDocumentosPermitidos = array('0', '1', '2', '3', '4', '5'); // Lista de tipos de documento permitidos
 
 		if (!in_array($tipoDocumento, $tiposDocumentosPermitidos)) {
 			$errores['tipoDocumento'] = 'Seleccione un tipo de documento válido.';
@@ -63,14 +66,18 @@ class aprendizController
 		if (!preg_match('/^[A-Z]+$/', $primerNombre)) {
 			$errores['primerNombre'] = 'El nombre debe contener solo letras.';
 		}
+
 		$segundoNombre = isset($_POST['segundoNombre']) ? strtoupper($_POST['segundoNombre']) : NULL;
-		if (trim($segundoNombre) !== $segundoNombre) {
-			$errores['segundoNombre'] = 'El nombre no debe contener espacios.';
+		if ($segundoNombre != NULL) {
+			if (trim($segundoNombre) !== $segundoNombre) {
+				$errores['segundoNombre'] = 'El nombre no debe contener espacios.';
+			}
+			// Validar que solo contiene letras
+			if (!preg_match('/^[A-Z]+$/', $segundoNombre)) {
+				$errores['segundoNombre'] = 'El nombre debe contener solo letras.';
+			}
 		}
-		// Validar que solo contiene letras
-		if (!preg_match('/^[A-Z]+$/', $segundoNombre)) {
-			$errores['segundoNombre'] = 'El nombre debe contener solo letras.';
-		}
+
 		$primerApellido = isset($_POST['primerApellido']) ? strtoupper($_POST['primerApellido']) : '';
 		// Validar que no haya espacios en el apellido
 		if (trim($primerApellido) !== $primerApellido) {
@@ -81,22 +88,24 @@ class aprendizController
 			$errores['primerApellido'] = 'El Apellido debe contener solo letras.';
 		}
 		$segundoApellido = isset($_POST['segundoApellido']) ? strtoupper($_POST['segundoApellido']) : NULL;
-		if (trim($segundoApellido) !== $segundoApellido) {
-			$errores['segundoApellido'] = 'El Apellido no debe contener espacios.';
-		}
-		// Validar que solo contiene letras
-		if (!preg_match('/^[A-Z]+$/', $segundoApellido)) {
-			$errores['segundoApellido'] = 'El Apellido debe contener solo letras.';
+		if ($segundoApellido != NULL) {
+			if (trim($segundoApellido) !== $segundoApellido) {
+				$errores['segundoApellido'] = 'El Apellido no debe contener espacios.';
+			}
+			// Validar que solo contiene letras
+			if (!preg_match('/^[A-Z]+$/', $segundoApellido)) {
+				$errores['segundoApellido'] = 'El Apellido debe contener solo letras.';
+			}
 		}
 		$fechaDeNacimiento = isset($_POST['fechaDeNacimiento']) ? $_POST['fechaDeNacimiento'] : '';
 		// validacion para la fecha de nacimiento que no sea menor a 14 años
-			$fechaActual = new DateTime();
-			$fechaNacimiento = new DateTime($fechaDeNacimiento);
-			$diferencia = $fechaActual->diff($fechaNacimiento);
+		$fechaActual = new DateTime();
+		$fechaNacimiento = new DateTime($fechaDeNacimiento);
+		$diferencia = $fechaActual->diff($fechaNacimiento);
 
-			if ($diferencia->y < 14) {
-				$errores['fechaDeNacimiento'] = 'El aprendiz debe tener minimo 14 años para registrarlo.';
-			}
+		if ($diferencia->y < 14) {
+			$errores['fechaDeNacimiento'] = 'El aprendiz debe tener minimo 14 años para registrarlo.';
+		}
 
 		$sexo = isset($_POST['sexo']) ? $_POST['sexo'] : '';
 		// validar el sexo
@@ -114,7 +123,8 @@ class aprendizController
 
 		try {
 			// Verificar si los campos obligatorios no están vacíos
-			if ($tipoDocumento !== ''  && !empty($numeroDocumento) && !empty($primerNombre) && !empty($primerApellido) && !empty($fechaDeNacimiento) && $sexo !== ''  && !empty($telefono)&& !empty($direccion)) {
+			if ($tipoDocumento !== ''  && !empty($numeroDocumento) && !empty($primerNombre) && !empty($primerApellido) && !empty($fechaDeNacimiento) && $sexo !== ''  && !empty($telefono) && !empty($direccion)) {
+				ob_start();
 				$Naprendiz = new Aprendiz;
 
 				$Naprendiz->setTipoDocumento($tipoDocumento);
@@ -130,8 +140,11 @@ class aprendizController
 				$Naprendiz->setSexo($sexo);
 				$Naprendiz->setTelefono($telefono);
 				$Naprendiz->setDireccion($direccion);
-
 				$Naprendiz->crearAprendiz();
+
+				// $exitos['registrado'] = 'Aprendiz registrado con éxito.';
+				$_SESSION['exito']='Aprendiz registrado con éxito.';
+				ob_end_flush(); 
 				header("Location: " . base_url);
 				exit;
 			} else {
@@ -139,7 +152,7 @@ class aprendizController
 				require_once 'views/aprendiz/crearAprendiz.php';
 			}
 		} catch (Exception $e) {
-			echo "error al guardar al aprendiz" . $e->getMessage();
+			// echo "error al guardar al aprendiz" . $e->getMessage();
 		}
 	}
 }
