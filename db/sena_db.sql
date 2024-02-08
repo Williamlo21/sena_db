@@ -40,14 +40,7 @@ CREATE TABLE IF NOT EXISTS `aprendices` (
   CONSTRAINT `FK_aprendices_tipodocumento` FOREIGN KEY (`idTipoDocumento`) REFERENCES `tipodocumento` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla sena_db.aprendices: ~6 rows (aproximadamente)
-INSERT IGNORE INTO `aprendices` (`id`, `idTipoDocumento`, `numeroDocumento`, `primerNombre`, `segundoNombre`, `primerApellido`, `segundoApellido`, `fechaDeNacimiento`, `edad`, `idSexo`, `telefono`, `direccion`) VALUES
-	(5, 1, 1120583157, 'LEIDY', 'NATALIA', 'MORERNO', 'MOSQUERA', '1999-01-28', 25, 1, '3184040503', 'LA GRANJA'),
-	(25, 1, 123153451, 'ESTE', '', 'ES', '', '2012-12-12', 11, 0, '234134123515', 'SENA MODELO'),
-	(26, 1, 581650, 'AQUI', '', 'FUE', '', '2000-09-22', 23, 0, '1234567', 'ASDAFGWE'),
-	(27, 1, 12354, 'SDFASA', 'ASD', 'SADGAS', 'ZXCVS', '2000-05-12', 23, 0, '5840263', 'SDFA'),
-	(28, 0, 1007293511, 'WILLIAM', 'NATALIA', 'MORERNO', '', '2010-02-08', 14, 1, '3232081264', 'BOGOTA'),
-	(29, 1, 1120583157, 'LEIDY', 'NATALIA', 'MORENO', 'MOSQUERA', '1999-01-28', 25, 2, '3184040503', 'AUDIFARMA');
+-- Volcando datos para la tabla sena_db.aprendices: ~0 rows (aproximadamente)
 
 -- Volcando estructura para tabla sena_db.sexo
 CREATE TABLE IF NOT EXISTS `sexo` (
