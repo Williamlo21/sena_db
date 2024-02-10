@@ -120,7 +120,7 @@ function calcularEdad($fechaNacimiento)
 
 // Llama a la función para generar registros aleatorios 1000 veces
 $aleatorio = new AleatoriosController();
-for ($i = 0; $i < 10000; $i++) {
+for ($i = 0; $i < 10; $i++) {
     $aleatorio->generarRegistrosAleatorios();
 }
 

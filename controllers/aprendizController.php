@@ -14,6 +14,11 @@ class aprendizController
 		$aprendices = $Naprendices->verAprendices();
 		require_once 'views/aprendiz/verAprendices.php';
 	}
+	function redirect($url)
+	{
+		header("Location: " . $url);
+		exit;
+	}
 	public function verAprendiz()
 	{
 		// funcion para hacer la consulta de un solo aprendiz con el id
@@ -22,9 +27,24 @@ class aprendizController
 			$aprendiz = new Aprendiz();
 			$aprendiz->setId($id);
 			// $_SESSION['aprendiz'] = $aprendiz->verAprendiz();
-			$nAprendiz = $aprendiz->verAprendiz();
-			require_once 'views/aprendiz/verAprendiz.php';
+			// require_once 'views/aprendiz/verAprendiz.php';
 		}
+	}
+	// esta funcion esta descartada
+	public function verAprendizActualizado($id)
+	{
+		
+		// funcion para hacer la consulta de un solo aprendiz con el id
+		$naprendiz = array();
+		$aprendiz = new Aprendiz();
+		$aprendiz->setId($id);
+		$nAprendiz = $aprendiz->verAprendiz();
+		// ob_end_flush();
+		$nAprendizEncoded = urlencode(json_encode($nAprendiz));
+
+		// Redirigir a la vista con los datos del aprendiz en la URL
+		header('Location: ' . base_url . 'views/aprendiz/prueba.php?data=' . $nAprendizEncoded);
+		exit;
 	}
 	public function editarAprendiz()
 	{
@@ -147,16 +167,17 @@ class aprendizController
 				$Naprendiz->setDireccion($direccion);
 				// $consulta = $Naprendiz->editarAprendiz();
 				$Naprendiz->editarAprendiz();
-				
-				// if ($consulta) {
-					
-					
 
-					// $exitos['registrado'] = 'Aprendiz registrado con éxito.';
-					$_SESSION['exito'] = 'Aprendiz actualizado con éxito.';
-					ob_end_flush();
-					header("Location: " . base_url);
-					exit;
+				// if ($consulta) {
+
+
+
+				// $exitos['registrado'] = 'Aprendiz registrado con éxito.';
+				$_SESSION['exito'] = 'Aprendiz actualizado con éxito.';
+				ob_end_flush();
+				// $this->verAprendizActualizado($id);
+				header("Location: " . base_url);
+				exit;
 				// }
 			} else {
 				$errores['obligatorios'] = 'Por favor llene el campo obligatorio.';

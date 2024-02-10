@@ -1,4 +1,7 @@
 
+<?php
+
+?>
 <div class="container mt-4">
   <h2>Información del Aprendiz</h2>
   <table class="table table-bordered">
@@ -51,6 +54,12 @@
         <th scope="row">Dirección</th>
         <td><?= $nAprendiz['direccion']; ?></td>
       </tr>
+
+
     </tbody>
   </table>
+</div>
+<div class="container d-flex justify-content-center btn-editar">
+  <!-- boton con enlace para eitar el aprendiz -->
+  <a href="<?= base_url ?>aprendiz/editarAprendiz&id=<?= $nAprendiz['id']; ?>" class="btn btn-warning">Editar</a></td>
 </div>
